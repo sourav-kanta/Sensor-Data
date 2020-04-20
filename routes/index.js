@@ -21,13 +21,15 @@ router.post('/', function(req, res, next) {
   for(var i=0;i<data.length;i++)
   {
   	var time=data[i].eventTime;
-  	var sensor = data[i].payload.data.Temperature;
   	var machine_key=Object.keys(data[i].payload.data);
-  	var machine = data[i].payload.data[machine_key[1]];
+  	var machine = data[i].payload.data[machine_key[0]];
+  	var sensor_key=machine_key[2];
+  	var sensor = data[i].payload.data[sensor_key];
   	console.log(time+" "+machine+" "+sensor);
   	var payload ={
   		"_id" : time,
   		"machine" : machine, 
+  		"attribute" : sensor_key,
   		"data" : sensor
   	};
   	conn.collection('Sensor_Data').insert(payload);
